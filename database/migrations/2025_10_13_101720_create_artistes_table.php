@@ -12,8 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('artistes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        $table->id();
+        $table->string('profession');
+        $table->string('style');
+        $table->string('telephone')->unique();
+        $table->string('pseudo')->unique();
+        $table->string('adresse');
+        $table->string('instagram');
+        $table->string('facebook');
+        $table->string('image');
+        $table->timestamps();
+    
         });
     }
 
