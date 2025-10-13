@@ -15,14 +15,16 @@ return new class extends Migration
         $table->id();
         $table->string('profession');
         $table->string('style');
-        $table->string('telephone')->unique();
-        $table->string('pseudo')->unique();
-        $table->string('adresse');
-        $table->string('instagram');
-        $table->string('facebook');
-        $table->string('image');
+        $table->string('telephone')->nullable();
+        $table->string('pseudo')->nullable();
+        $table->string('adresse')->nullable();
+        $table->string('instagram')->nullable();
+        $table->string('facebook')->nullable();
+        $table->string('image')->nullable();
         $table->timestamps();
-    
+        $table->timestamp('created_at')->useCurrent();
+        $table->timestamp('updated_at')->useCurrent()->onUpdate('CURRENT_TIMESTAMP');
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
 
