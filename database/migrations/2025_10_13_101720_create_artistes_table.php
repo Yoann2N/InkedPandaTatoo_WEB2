@@ -21,7 +21,6 @@ return new class extends Migration
         $table->string('instagram')->nullable();
         $table->string('facebook')->nullable();
         $table->string('image')->nullable();
-        $table->timestamps();
         $table->timestamp('created_at')->useCurrent();
         $table->timestamp('updated_at')->useCurrent()->onUpdate('CURRENT_TIMESTAMP');
         $table->foreignId('user_id')->constrained()->onDelete('cascade');
