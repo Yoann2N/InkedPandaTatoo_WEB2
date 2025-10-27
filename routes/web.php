@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('users', UserController::class);
+Route::resource('user', UserController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
