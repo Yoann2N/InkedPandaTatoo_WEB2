@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('realisations', function (Blueprint $table) {
             $table->id();
-            $table->string('publication');
+            $table->string('titre');
+            $table->text('description');
+            $table->string('imageUrl');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->usecurrentOnUpdate();
         });
