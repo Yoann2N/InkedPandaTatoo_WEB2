@@ -22,7 +22,7 @@ return new class extends Migration
         $table->string('facebook')->nullable();
         $table->string('image')->nullable();
         $table->timestamp('created_at')->useCurrent();
-        $table->timestamp('updated_at')->useCurrent()->onUpdate('CURRENT_TIMESTAMP');
+        $table->timestamp('updated_at')->useCurrent()->usecurrentOnUpdate();
         $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
