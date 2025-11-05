@@ -3,13 +3,17 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TemplateController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/', [TemplateController::class, 'show']);
 
 Route::resource('user', UserController::class);
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -22,3 +26,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/{page?}', [TemplateController::class, 'show'])->where('page', '.*');

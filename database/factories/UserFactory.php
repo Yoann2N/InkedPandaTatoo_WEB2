@@ -31,11 +31,11 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => bcrypt('123456789'), // password
             'remember_token' => Str::random(10),
-            // 'prenom'=> fake('fr_FR')->firstname(),
-            // 'adresse'=> fake('fr_FR')->address(),
-            // 'code_postal'=> fake('fr_FR')->postcode(),
-            // 'ville'=> fake('fr_FR')->city(),
-            // 'telephone'=> fake('fr_FR')->phoneNumber(),
+            'prenom'=> fake('fr_FR')->firstname(),
+            'adresse'=> fake('fr_FR')->address(),
+            'code_postal'=> fake('fr_FR')->postcode(),
+            'ville'=> fake('fr_FR')->city(),
+            'telephone'=> fake('fr_FR')->phoneNumber(),
         ];
     }
 

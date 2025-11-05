@@ -1,0 +1,811 @@
+{
+    "manifest_version": "1.0.21",
+    "title": "lackink - Tattoo Studio Elementor Template Kit",
+    "page_builder": "elementor",
+    "kit_version": "1.0.3",
+    "templates": [
+        {
+            "name": "Global Kit Styles",
+            "screenshot": "screenshots\/global-kit-styles.jpg",
+            "source": "templates\/global.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net",
+            "type": "section",
+            "category": "page",
+            "metadata": {
+                "template_type": "global-styles",
+                "include_in_zip": "1",
+                "elementor_pro_required": null,
+                "additional_template_information": [
+                    "These are the global theme styles configured through the Elementor Theme Styles area."
+                ]
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Homepage 1",
+            "screenshot": "screenshots\/homepage-1.jpg",
+            "source": "templates\/homepage-1.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/homepage-1\/",
+            "type": "section",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-home",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Homepage 2",
+            "screenshot": "screenshots\/homepage-2.jpg",
+            "source": "templates\/homepage-2.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/homepage-2\/",
+            "type": "section",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-home",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "homepage 3",
+            "screenshot": "screenshots\/homepage-3.jpg",
+            "source": "templates\/homepage-3.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/homepage-3\/",
+            "type": "section",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-home",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Single Project 2",
+            "screenshot": "screenshots\/single-project-2.jpg",
+            "source": "templates\/single-project-2.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/single-project-2\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Single Project 1",
+            "screenshot": "screenshots\/single-project-1.jpg",
+            "source": "templates\/single-project-1.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/single-project-1\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Contact Us",
+            "screenshot": "screenshots\/contact-us.jpg",
+            "source": "templates\/contact-us.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/contact-us\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Gallery",
+            "screenshot": "screenshots\/gallery.jpg",
+            "source": "templates\/gallery.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/gallery\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Services",
+            "screenshot": "screenshots\/services.jpg",
+            "source": "templates\/services.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/services\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Testimonials",
+            "screenshot": "screenshots\/testimonials.jpg",
+            "source": "templates\/testimonials.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/testimonials\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Our Team",
+            "screenshot": "screenshots\/our-team.jpg",
+            "source": "templates\/our-team.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/our-team\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "About Us",
+            "screenshot": "screenshots\/about-us.jpg",
+            "source": "templates\/about-us.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/about-us\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Header",
+            "screenshot": "screenshots\/header.jpg",
+            "source": "templates\/header.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/header\/",
+            "type": "section",
+            "category": "section",
+            "metadata": {
+                "template_type": "section-header",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Footer",
+            "screenshot": "screenshots\/footer.jpg",
+            "source": "templates\/footer.json",
+            "preview_url": "http:\/\/templatekit.krakenbox.net\/blankink\/template-kit\/footer\/",
+            "type": "section",
+            "category": "section",
+            "metadata": {
+                "template_type": "section-footer",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        }
+    ],
+    "required_plugins": [
+        {
+            "name": "Contact Form 7",
+            "version": "5.5.4",
+            "file": "contact-form-7\/wp-contact-form-7.php",
+            "author": "Takayuki Miyoshi"
+        },
+        {
+            "name": "ElementsKit Lite",
+            "version": "2.5.3",
+            "file": "elementskit-lite\/elementskit-lite.php",
+            "author": "Wpmet"
+        },
+        {
+            "name": "Elementor Header & Footer Builder",
+            "version": "1.6.9",
+            "file": "header-footer-elementor\/header-footer-elementor.php",
+            "author": "Brainstorm Force, Nikhil Chavan"
+        },
+        {
+            "name": "Elementor",
+            "version": "3.5.5",
+            "file": "elementor\/elementor.php",
+            "author": "Elementor.com"
+        }
+    ],
+    "images": [
+        {
+            "filename": "s4.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s4-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/single-project-2.json",
+                    "name": "Single Project 2"
+                },
+                {
+                    "source": "templates\/single-project-1.json",
+                    "name": "Single Project 1"
+                },
+                {
+                    "source": "templates\/contact-us.json",
+                    "name": "Contact Us"
+                },
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                },
+                {
+                    "source": "templates\/services.json",
+                    "name": "Services"
+                },
+                {
+                    "source": "templates\/testimonials.json",
+                    "name": "Testimonials"
+                },
+                {
+                    "source": "templates\/our-team.json",
+                    "name": "Our Team"
+                },
+                {
+                    "source": "templates\/about-us.json",
+                    "name": "About Us"
+                }
+            ],
+            "filesize": 357952,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/portrait-of-a-stylish-bearded-guy-with-tattooed-ha-LHR7UJH?"
+        },
+        {
+            "filename": "s1.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s1-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/single-project-2.json",
+                    "name": "Single Project 2"
+                },
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                }
+            ],
+            "filesize": 412984,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/tattoo-master-is-creating-new-tattoo-for-customer-P7H93E6?"
+        },
+        {
+            "filename": "s7.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s7-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                },
+                {
+                    "source": "templates\/about-us.json",
+                    "name": "About Us"
+                }
+            ],
+            "filesize": 386609,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/process-of-tattoo-makining-at-cozy-tattoo-salon-PF6SU5T?"
+        },
+        {
+            "filename": "s3.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s3-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/single-project-2.json",
+                    "name": "Single Project 2"
+                },
+                {
+                    "source": "templates\/about-us.json",
+                    "name": "About Us"
+                }
+            ],
+            "filesize": 353567,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/professional-tattoo-artist-PPPNETS?"
+        },
+        {
+            "filename": "s8.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s8-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/contact-us.json",
+                    "name": "Contact Us"
+                }
+            ],
+            "filesize": 342243,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/necessarry-accesorries-for-tattoo-creating-on-the--HJXAZV7?"
+        },
+        {
+            "filename": "s10.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s10-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                },
+                {
+                    "source": "templates\/testimonials.json",
+                    "name": "Testimonials"
+                },
+                {
+                    "source": "templates\/our-team.json",
+                    "name": "Our Team"
+                },
+                {
+                    "source": "templates\/about-us.json",
+                    "name": "About Us"
+                }
+            ],
+            "filesize": 191653,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/portrait-of-young-woman-with-tattooes-38MWHD5?"
+        },
+        {
+            "filename": "s13.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s13-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/single-project-1.json",
+                    "name": "Single Project 1"
+                },
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                },
+                {
+                    "source": "templates\/testimonials.json",
+                    "name": "Testimonials"
+                },
+                {
+                    "source": "templates\/our-team.json",
+                    "name": "Our Team"
+                },
+                {
+                    "source": "templates\/about-us.json",
+                    "name": "About Us"
+                }
+            ],
+            "filesize": 286817,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/inked-male-model-posing-in-a-dark-studio-with-grey-U5FMQRX?"
+        },
+        {
+            "filename": "s11.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s11-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                },
+                {
+                    "source": "templates\/testimonials.json",
+                    "name": "Testimonials"
+                },
+                {
+                    "source": "templates\/our-team.json",
+                    "name": "Our Team"
+                },
+                {
+                    "source": "templates\/about-us.json",
+                    "name": "About Us"
+                }
+            ],
+            "filesize": 302803,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/sexual-tattooed-girl-wearing-a-red-unbuttoned-chec-M488CGH?"
+        },
+        {
+            "filename": "s12.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s12-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/testimonials.json",
+                    "name": "Testimonials"
+                },
+                {
+                    "source": "templates\/our-team.json",
+                    "name": "Our Team"
+                }
+            ],
+            "filesize": 376184,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/tattooed-bearded-male-sits-on-a-chair-GN5ZRYE?"
+        },
+        {
+            "filename": "logo1.png",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/logo1.png",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                }
+            ],
+            "filesize": 6281,
+            "dimensions": [
+                300,
+                120
+            ],
+            "image_source": "cc0",
+            "person_or_place": "no",
+            "image_urls": "https:\/\/logoipsum.com\/"
+        },
+        {
+            "filename": "logo2.png",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/logo2.png",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                }
+            ],
+            "filesize": 5964,
+            "dimensions": [
+                300,
+                120
+            ],
+            "image_source": "cc0",
+            "person_or_place": "no",
+            "image_urls": "https:\/\/logoipsum.com\/"
+        },
+        {
+            "filename": "logo3.png",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/logo3.png",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                }
+            ],
+            "filesize": 5795,
+            "dimensions": [
+                300,
+                120
+            ],
+            "image_source": "cc0",
+            "person_or_place": "no",
+            "image_urls": "https:\/\/logoipsum.com\/"
+        },
+        {
+            "filename": "logo4.png",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/logo4.png",
+            "templates": [
+                {
+                    "source": "templates\/homepage-1.json",
+                    "name": "Homepage 1"
+                },
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                }
+            ],
+            "filesize": 4778,
+            "dimensions": [
+                300,
+                120
+            ],
+            "image_source": "cc0",
+            "person_or_place": "no",
+            "image_urls": "https:\/\/logoipsum.com\/"
+        },
+        {
+            "filename": "s14.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s14-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/single-project-1.json",
+                    "name": "Single Project 1"
+                },
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                },
+                {
+                    "source": "templates\/testimonials.json",
+                    "name": "Testimonials"
+                },
+                {
+                    "source": "templates\/our-team.json",
+                    "name": "Our Team"
+                }
+            ],
+            "filesize": 359739,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/bearded-male-with-naked-tattooed-torso-GXDT3MB?"
+        },
+        {
+            "filename": "s2.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s2-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-2.json",
+                    "name": "Homepage 2"
+                },
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/single-project-2.json",
+                    "name": "Single Project 2"
+                },
+                {
+                    "source": "templates\/testimonials.json",
+                    "name": "Testimonials"
+                },
+                {
+                    "source": "templates\/our-team.json",
+                    "name": "Our Team"
+                }
+            ],
+            "filesize": 443799,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/tattooed-beauty-PKJ55V9?"
+        },
+        {
+            "filename": "s9.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s9-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/homepage-3.json",
+                    "name": "homepage 3"
+                },
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                }
+            ],
+            "filesize": 473022,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/two-beautiful-girls-at-tattoo-studio-8WPQ5UE"
+        },
+        {
+            "filename": "s6.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s6-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                }
+            ],
+            "filesize": 240892,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/process-of-tattoo-makining-at-dark-tattoo-studio-K5ETFEG"
+        },
+        {
+            "filename": "s5.jpg",
+            "thumbnail_url": "http:\/\/templatekit.krakenbox.net\/blankink\/wp-content\/uploads\/sites\/4\/2020\/10\/s5-600x400.jpg",
+            "templates": [
+                {
+                    "source": "templates\/gallery.json",
+                    "name": "Gallery"
+                }
+            ],
+            "filesize": 379653,
+            "dimensions": [
+                1920,
+                1280
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/tattoo-master-is-creating-new-tattoo-for-customer-XBL4ZAY"
+        }
+    ]
+}

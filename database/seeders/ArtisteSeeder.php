@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Models\Artiste;
 
 
 class ArtisteSeeder extends Seeder
@@ -16,7 +17,7 @@ class ArtisteSeeder extends Seeder
      */
     public function run(): void
     {
-        
+        Artiste::factory()->count(20)->create();
 
     }
 }
