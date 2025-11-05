@@ -24,10 +24,11 @@ class ArtisteFactory extends Factory
             // 'telephone' => fake("fr_FR")->phoneNumber(),
             'pseudo' => fake("fr_FR")->userName(),
             // 'adresse' => fake("fr_FR")->address(),
+            'bio' => $this->faker->paragraph(3, true),
             'instagram' => $this->faker->url(),
             'facebook' => $this->faker->url(),
-            'imageUrl' => $this->faker->imageUrl(),
-            'banniereUrl' => $this->faker->banniereUrl(),
+            'banniereUrl' => $this->faker->imageUrl(),
+            'vignetteUrl' => $this->faker->imageUrl(),
             'css' => "body { background-color: #f0f0f0; }". $this->faker->safecolorName(),
                 
         ];

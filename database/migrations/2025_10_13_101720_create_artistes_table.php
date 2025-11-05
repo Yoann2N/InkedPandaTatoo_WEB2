@@ -18,6 +18,7 @@ return new class extends Migration
         // $table->string('telephone')->nullable();
         $table->string('pseudo')->nullable();
         // $table->string('adresse')->nullable();
+        $table->text('bio')->nullable();
         $table->string('instagram')->nullable();
         $table->string('facebook')->nullable();
         $table->string('banniereUrl')->nullable();

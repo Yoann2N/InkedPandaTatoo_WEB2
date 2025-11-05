@@ -15,6 +15,7 @@ class Artiste extends Model
         'style',
         // 'telephone',
         'pseudo',
+        'bio',
         // 'adresse',
         'instagram',
         'facebook',
