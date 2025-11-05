@@ -15,12 +15,14 @@ return new class extends Migration
         $table->id();
         $table->string('profession');
         $table->string('style');
-        $table->string('telephone')->nullable();
+        // $table->string('telephone')->nullable();
         $table->string('pseudo')->nullable();
-        $table->string('adresse')->nullable();
+        // $table->string('adresse')->nullable();
         $table->string('instagram')->nullable();
         $table->string('facebook')->nullable();
-        $table->string('image')->nullable();
+        $table->string('banniereUrl')->nullable();
+        $table->string('vignetteUrl')->nullable();
+        $table->text('css')->nullable();
         $table->timestamp('created_at')->useCurrent();
         $table->timestamp('updated_at')->useCurrent()->usecurrentOnUpdate();
         $table->foreignId('user_id')->constrained()->onDelete('cascade');

@@ -13,11 +13,13 @@ class Artiste extends Model
         'user_id',
         'profession',
         'style',
-        'telephone',
+        // 'telephone',
         'pseudo',
-        'adresse',
+        // 'adresse',
         'instagram',
         'facebook',
-        'image',
+        'banniereUrl',
+        'vignetteUrl',
+        'css',
     ];
 }

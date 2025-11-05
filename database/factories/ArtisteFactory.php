@@ -21,12 +21,14 @@ class ArtisteFactory extends Factory
             'user_id'=> User::inRandomOrder()->value('id'),
             'profession' => $this->faker->randomElement(['Tatoueur', 'Pierceur', 'Maquilleur', 'Nailartiste', 'Esthéticienne']),
             'style' => $this->faker->randomElement(['Old School', 'New School', 'Réalisme', 'Aquarelle', 'Tribal', 'Japonais']),
-            'telephone' => fake("fr_FR")->phoneNumber(),
+            // 'telephone' => fake("fr_FR")->phoneNumber(),
             'pseudo' => fake("fr_FR")->userName(),
-            'adresse' => fake("fr_FR")->address(),
+            // 'adresse' => fake("fr_FR")->address(),
             'instagram' => $this->faker->url(),
             'facebook' => $this->faker->url(),
-            'image' => $this->faker->imageUrl(),
+            'imageUrl' => $this->faker->imageUrl(),
+            'banniereUrl' => $this->faker->banniereUrl(),
+            'css' => "body { background-color: #f0f0f0; }". $this->faker->safecolorName(),
                 
         ];
     }
