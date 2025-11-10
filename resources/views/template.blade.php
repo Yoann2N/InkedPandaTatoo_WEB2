@@ -1,16 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    {{-- CSS global du template --}}
-    <link rel="stylesheet" href="{{ asset('template/css/style.css') }}">
+  <title>{{ $slug ?? 'Template' }}</title>
+
+  {{-- Ton CSS template (place files dans public/template/css/) --}}
+  <link rel="stylesheet" href="{{ asset('template/css/style.css') }}">
+
+  {{-- CSS léger pour simuler les classes elementor --}}
+  <style>
+    /* layout de base */
+    body { margin:0; font-family: Arial, Helvetica, sans-serif; color:#111; background:#fff; }
+    .elementor-section { position: relative; overflow: hidden; }
+    .elementor-column { display:flex; flex-direction:column; padding:1rem; box-sizing:border-box; }
+    .elementor-widget { margin-bottom:1rem; }
+    .elementor-heading-title { margin:0 0 1rem 0; font-family: 'Oswald', sans-serif; text-align:center; }
+
+    /* slideshow */
+    .template-slideshow { position: absolute; inset:0; z-index:0; }
+    .template-slideshow .slide { position:absolute; inset:0; opacity:0; transition:opacity .8s ease; }
+    .template-slideshow .slide img { width:100%; height:100%; object-fit:cover; display:block; }
+    .template-slideshow .slide.active { opacity:1; z-index:0; }
+
+    /* overlay to put content above slideshow */
+    .elementor-section > .elementor-column,
+    .elementor-section > .elementor-widget,
+    .elementor-section .elementor-column {
+      position: relative; z-index:2;
+    }
+
+    /* gallery */
+    .elementor-gallery { display:flex; flex-wrap:wrap; gap:8px; }
+    .elementor-gallery .gallery-item img { width:200px; height:120px; object-fit:cover; }
+
+    /* simple list */
+    .elementor-list { list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px; }
+    .elementor-list li { background:#f5f5f5; padding:6px 10px; border-radius:6px; }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .elementor-column { padding: .5rem; }
+    }
+  </style>
 </head>
 <body>
 
+  <div id="template-root">
     {!! $html !!}
+  </div>
 
-    {{-- Scripts du template --}}
-    <script src="{{ asset('template/js/main.js') }}"></script>
+  {{-- JS minimal pour le slideshow --}}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const slideshows = document.querySelectorAll('.template-slideshow');
+      slideshows.forEach(function(slideshow) {
+        const slides = Array.from(slideshow.querySelectorAll('.slide'));
+        if (slides.length === 0) return;
+        let idx = 0;
+        slides.forEach((s,i) => { if (i===0) s.classList.add('active'); });
+        setInterval(() => {
+          slides[idx].classList.remove('active');
+          idx = (idx + 1) % slides.length;
+          slides[idx].classList.add('active');
+        }, 4000);
+      });
+    });
+  </script>
+
+  {{-- ton JS template si nécessaire --}}
+  <script src="{{ asset('template/js/main.js') }}"></script>
 </body>
 </html>
