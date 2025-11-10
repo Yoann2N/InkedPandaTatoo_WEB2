@@ -43,6 +43,40 @@
     @media (max-width: 768px) {
       .elementor-column { padding: .5rem; }
     }
+    .elementor-button {
+        background: #AE8959;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .elementor-icon-box {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .elementor-icon-box-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #FFFFFF;
+    }
+
+    .elementor-icon-box-description {
+        color: #CCCCCC;
+        line-height: 1.5;
+    }
+
+    /* Styles pour les témoignages et autres widgets */
+    .elementor-testimonial {
+        background: rgba(255,255,255,0.1);
+        padding: 20px;
+        border-radius: 5px;
+        margin: 10px;
+    }
   </style>
 </head>
 <body>
