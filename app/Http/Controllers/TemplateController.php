@@ -9,14 +9,6 @@ class TemplateController extends Controller
 {
     public function show($page = 'homepage-1')
     {
-        // For now, return a simple response to test if the controller works
-        return response()->json([
-            'message' => 'TemplateController is working!',
-            'page' => $page
-        ]);
-        
-        // Later you can uncomment and use your template rendering logic:
-        /*
         $templatePath = resource_path("templates/{$page}.json");
         
         if (!File::exists($templatePath)) {
@@ -30,7 +22,6 @@ class TemplateController extends Controller
             'content' => $content,
             'page' => $page
         ]);
-        */
     }
 
     private function renderContent($elements)

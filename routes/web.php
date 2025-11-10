@@ -15,6 +15,9 @@ Route::get('/', function () {
 
 Route::get('/template/{page?}', [TemplateController::class, 'show']);
 
+Route::get('/{page}', [TemplateController::class, 'show'])
+    ->where('page', 'homepage-1|homepage-2|about-us|contact-us');
+
 
 Route::resource('user', UserController::class);
 

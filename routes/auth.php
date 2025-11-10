@@ -11,9 +11,9 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\TemplateController;
 
 
-Route::get('/', [TemplateController::class, 'show']);
 
 
 Route::middleware('guest')->group(function () {
