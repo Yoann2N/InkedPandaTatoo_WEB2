@@ -34,51 +34,57 @@ class TemplateController extends Controller
             $settings = $el['settings'] ?? [];
             $isInner = $el['isInner'] ?? false;
 
-            // --- SECTION
-            if ($elType === 'section') {
-                $style = $this->buildSectionStyle($settings);
-                $sectionClass = 'elementor-section' . ($isInner ? ' elementor-inner-section' : '');
-                
-                $html .= '<section class="'.$sectionClass.'" style="'.htmlspecialchars($style).'">';
-                
-                // Gestion du slideshow background
-                if (($settings['background_background'] ?? '') === 'slideshow' && !empty($settings['background_slideshow_gallery'])) {
-                    $html .= $this->renderSlideshow($settings['background_slideshow_gallery']);
+            try {
+                // --- SECTION
+                if ($elType === 'section') {
+                    $style = $this->buildSectionStyle($settings);
+                    $sectionClass = 'elementor-section' . ($isInner ? ' elementor-inner-section' : '');
+                    
+                    $html .= '<section class="'.$sectionClass.'" style="'.htmlspecialchars($style).'">';
+                    
+                    // Gestion du slideshow background
+                    if (($settings['background_background'] ?? '') === 'slideshow' && !empty($settings['background_slideshow_gallery'])) {
+                        $html .= $this->renderSlideshow($settings['background_slideshow_gallery']);
+                    }
+                    
+                    // Rendu des éléments enfants
+                    if (!empty($el['elements'])) {
+                        $html .= $this->renderContent($el['elements']);
+                    }
+                    
+                    $html .= '</section>';
                 }
-                
-                // Rendu des éléments enfants
-                if (!empty($el['elements'])) {
-                    $html .= $this->renderContent($el['elements']);
-                }
-                
-                $html .= '</section>';
-            }
 
-            // --- COLUMN
-            if ($elType === 'column') {
-                $colSize = $settings['_column_size'] ?? 100;
-                $style = 'flex:0 0 '.(int)$colSize.'%;';
-                
-                // Ajouter le padding si présent
-                if (!empty($settings['padding'])) {
-                    $p = $settings['padding'];
-                    $unit = $p['unit'] ?? 'px';
-                    $style .= 'padding: ' . ($p['top'] ?? 0) . $unit . ' ' . ($p['right'] ?? 0) . $unit . ' ' . ($p['bottom'] ?? 0) . $unit . ' ' . ($p['left'] ?? 0) . $unit . ';';
+                // --- COLUMN
+                elseif ($elType === 'column') {
+                    $colSize = $settings['_column_size'] ?? 100;
+                    $style = 'flex:0 0 '.(int)$colSize.'%;';
+                    
+                    // Ajouter le padding si présent
+                    if (!empty($settings['padding'])) {
+                        $p = $settings['padding'];
+                        $unit = $p['unit'] ?? 'px';
+                        $style .= 'padding: ' . ($p['top'] ?? 0) . $unit . ' ' . ($p['right'] ?? 0) . $unit . ' ' . ($p['bottom'] ?? 0) . $unit . ' ' . ($p['left'] ?? 0) . $unit . ';';
+                    }
+                    
+                    $html .= '<div class="elementor-column" style="'.htmlspecialchars($style).'">';
+                    $html .= $this->renderContent($el['elements'] ?? []);
+                    $html .= '</div>';
                 }
-                
-                $html .= '<div class="elementor-column" style="'.htmlspecialchars($style).'">';
-                $html .= $this->renderContent($el['elements'] ?? []);
-                $html .= '</div>';
-            }
 
-            // --- WIDGET
-            if ($elType === 'widget') {
-                $widgetType = $el['widgetType'] ?? 'widget';
-                $widgetSettings = $el['settings'] ?? [];
-                
-                $html .= '<div class="elementor-widget elementor-widget-'.$widgetType.'">';
-                $html .= $this->renderWidget($widgetType, $widgetSettings);
-                $html .= '</div>';
+                // --- WIDGET
+                elseif ($elType === 'widget') {
+                    $widgetType = $el['widgetType'] ?? 'widget';
+                    $widgetSettings = $el['settings'] ?? [];
+                    
+                    $html .= '<div class="elementor-widget elementor-widget-'.$widgetType.'">';
+                    $html .= $this->renderWidget($widgetType, $widgetSettings);
+                    $html .= '</div>';
+                }
+            } catch (\Exception $e) {
+                // Log l'erreur mais continue le rendu
+                \Log::error("Error rendering element: " . $e->getMessage());
+                $html .= '<!-- Error rendering element -->';
             }
         }
 
@@ -223,5 +229,74 @@ class TemplateController extends Controller
         }
         
         return '<div class="elementor-video"><iframe src="'.htmlspecialchars($url).'" frameborder="0" allowfullscreen></iframe></div>';
+    }
+    private function renderIcon($settings)
+    {
+        $icon = $settings['selected_icon']['value'] ?? '';
+        $align = $settings['align'] ?? 'left';
+        
+        if ($icon) {
+            return '<div style="text-align: '.$align.'">
+                <span class="elementor-icon">'.$icon.'</span>
+            </div>';
+        }
+        
+        return '';
+    }
+
+    private function renderTestimonial($settings)
+    {
+        $content = $settings['testimonial_content'] ?? '';
+        $name = $settings['testimonial_name'] ?? '';
+        $job = $settings['testimonial_job'] ?? '';
+        $image = $settings['testimonial_image']['url'] ?? '';
+        $align = $settings['testimonial_alignment'] ?? 'left';
+        
+        $html = '<div class="elementor-testimonial" style="text-align: '.$align.'">';
+        
+        if ($image) {
+            $html .= '<div class="testimonial-image"><img src="'.htmlspecialchars($image).'" alt="'.$name.'"></div>';
+        }
+        
+        if ($content) {
+            $html .= '<div class="testimonial-content">'.$content.'</div>';
+        }
+        
+        if ($name) {
+            $html .= '<div class="testimonial-name">'.$name.'</div>';
+        }
+        
+        if ($job) {
+            $html .= '<div class="testimonial-job">'.$job.'</div>';
+        }
+        
+        $html .= '</div>';
+        
+        return $html;
+    }
+
+    private function renderImageCarousel($settings)
+    {
+        $images = $settings['carousel'] ?? [];
+        $slidesToShow = $settings['slides_to_show'] ?? 4;
+        
+        if (empty($images)) {
+            return '';
+        }
+        
+        $html = '<div class="elementor-image-carousel" style="display: grid; grid-template-columns: repeat('.$slidesToShow.', 1fr); gap: 15px;">';
+        
+        foreach ($images as $image) {
+            $url = $image['url'] ?? '';
+            if ($url) {
+                $html .= '<div class="carousel-item">
+                    <img src="'.htmlspecialchars($url).'" alt="" style="width: 100%; height: 200px; object-fit: cover;">
+                </div>';
+            }
+        }
+        
+        $html .= '</div>';
+        
+        return $html;
     }
 }
