@@ -9,25 +9,28 @@ class TemplateController extends Controller
 {
     public function show($page = 'homepage-1')
     {
-        // Define the path to your template JSON files
+        // For now, return a simple response to test if the controller works
+        return response()->json([
+            'message' => 'TemplateController is working!',
+            'page' => $page
+        ]);
+        
+        // Later you can uncomment and use your template rendering logic:
+        /*
         $templatePath = resource_path("templates/{$page}.json");
         
-        // Check if the template file exists
         if (!File::exists($templatePath)) {
             abort(404, "Template not found: {$page}");
         }
         
-        // Read and decode the template JSON
         $templateData = json_decode(File::get($templatePath), true);
-        
-        // Render the template content
         $content = $this->renderContent($templateData['content'] ?? []);
         
-        // Return a view with the rendered content
         return view('template', [
             'content' => $content,
             'page' => $page
         ]);
+        */
     }
 
     private function renderContent($elements)
