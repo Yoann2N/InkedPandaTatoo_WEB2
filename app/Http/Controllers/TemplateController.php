@@ -3,9 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Http\Request;
 
 class TemplateController extends Controller
 {
+    public function show($page = 'homepage-1')
+    {
+        // Define the path to your template JSON files
+        $templatePath = resource_path("templates/{$page}.json");
+        
+        // Check if the template file exists
+        if (!File::exists($templatePath)) {
+            abort(404, "Template not found: {$page}");
+        }
+        
+        // Read and decode the template JSON
+        $templateData = json_decode(File::get($templatePath), true);
+        
+        // Render the template content
+        $content = $this->renderContent($templateData['content'] ?? []);
+        
+        // Return a view with the rendered content
+        return view('template', [
+            'content' => $content,
+            'page' => $page
+        ]);
+    }
+
     private function renderContent($elements)
     {
         $html = '';
