@@ -28,6 +28,9 @@
         text-decoration: none;
     }
 
+    .elementor-heading-title{
+        color: #FFFFFF;
+    }
     .elementor-button:hover {
         background: #8c6d47;
     }
