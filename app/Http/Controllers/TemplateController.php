@@ -9,20 +9,35 @@ class TemplateController extends Controller
 {
     public function show($page = 'homepage-1')
     {
-        // CORRIGER LE CHEMIN - resources/js/templates au lieu de resources/templates
         $templatePath = resource_path("js/templates/{$page}.json");
         
+        \Log::info("Looking for template: " . $templatePath);
+        
         if (!File::exists($templatePath)) {
+            \Log::error("Template not found: " . $templatePath);
             abort(404, "Template not found: {$page}");
         }
         
-        $templateData = json_decode(File::get($templatePath), true);
-        $content = $this->renderContent($templateData['content'] ?? []);
-        
-        return view('template', [
-            'content' => $content,
-            'page' => $page
-        ]);
+        try {
+            $templateData = json_decode(File::get($templatePath), true);
+            
+            // Vérifier si le JSON est valide
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                abort(500, "Invalid JSON in template: " . json_last_error_msg());
+            }
+            
+            // RENDER LE CONTENU - CORRECTION ICI
+            $html = $this->renderContent($templateData['content'] ?? []);
+            
+            return view('template', [
+                'content' => $html,  // CORRECTION : 'content' au lieu de 'html'
+                'page' => $page
+            ]);
+            
+        } catch (\Exception $e) {
+            \Log::error("Template rendering error: " . $e->getMessage());
+            abort(500, "Template rendering error: " . $e->getMessage());
+        }
     }
 
     private function renderContent($elements)
@@ -84,10 +99,11 @@ class TemplateController extends Controller
             } catch (\Exception $e) {
                 // Log l'erreur mais continue le rendu
                 \Log::error("Error rendering element: " . $e->getMessage());
-                $html .= '<!-- Error rendering element -->';
+                $html .= '<!-- Error rendering element: ' . $e->getMessage() . ' -->';
             }
         }
 
+        \Log::info("Rendered HTML length: " . strlen($html)); // Debug
         return $html;
     }
     private function buildSectionStyle($settings)
