@@ -1,4 +1,5 @@
 {
+    "default": "homepage-1",
     "manifest_version": "1.0.21",
     "title": "lackink - Tattoo Studio Elementor Template Kit",
     "page_builder": "elementor",
