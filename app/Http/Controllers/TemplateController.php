@@ -151,6 +151,10 @@ class TemplateController extends Controller
     private function renderWidget($widgetType, $settings)
     {
         switch ($widgetType) {
+            case 'social-icons':
+                return $this->renderSocialIcons($settings);
+            case 'counter':
+                return $this->renderCounter($settings);
             case 'heading':
                 return $this->renderHeading($settings);
             case 'text-editor':
@@ -183,7 +187,32 @@ class TemplateController extends Controller
         
         return '<'.$size.' class="elementor-heading-title" style="text-align: '.$align.'">'.($title).'</'.$size.'>';
     }
+    private function renderSocialIcons($settings)
+    {
+        $icons = $settings['social_icon_list'] ?? [];
+        $html = '<div class="elementor-social-icons">';
+        foreach ($icons as $iconItem) {
+            $iconClass = $iconItem['social_icon']['value'] ?? '';
+            if ($iconClass) {
+                $html .= '<a href="#" class="elementor-social-icon"><i class="'.$iconClass.'"></i></a>';
+            }
+        }
+        $html .= '</div>';
+        return $html;
+    }
 
+    private function renderCounter($settings)
+    {
+        $end = $settings['ending_number'] ?? 0;
+        $suffix = $settings['suffix'] ?? '';
+        $title = $settings['title'] ?? '';
+        return '
+            <div class="elementor-counter">
+                <div class="counter-number">'.$end.$suffix.'</div>
+                <div class="counter-title">'.$title.'</div>
+            </div>
+        ';
+    }
     private function renderTextEditor($settings)
     {
         $content = $settings['editor'] ?? $settings['text'] ?? '';

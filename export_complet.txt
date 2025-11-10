@@ -516,28 +516,35 @@ class TemplateController extends Controller
 {
     public function show($page = 'homepage-1')
     {
-        // For now, return a simple response to test if the controller works
-        return response()->json([
-            'message' => 'TemplateController is working!',
-            'page' => $page
-        ]);
+        $templatePath = resource_path("js/templates/{$page}.json");
         
-        // Later you can uncomment and use your template rendering logic:
-        /*
-        $templatePath = resource_path("templates/{$page}.json");
+        \Log::info("Looking for template: " . $templatePath);
         
         if (!File::exists($templatePath)) {
+            \Log::error("Template not found: " . $templatePath);
             abort(404, "Template not found: {$page}");
         }
         
-        $templateData = json_decode(File::get($templatePath), true);
-        $content = $this->renderContent($templateData['content'] ?? []);
-        
-        return view('template', [
-            'content' => $content,
-            'page' => $page
-        ]);
-        */
+        try {
+            $templateData = json_decode(File::get($templatePath), true);
+            
+            // Vérifier si le JSON est valide
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                abort(500, "Invalid JSON in template: " . json_last_error_msg());
+            }
+            
+            // RENDER LE CONTENU - CORRECTION ICI
+            $html = $this->renderContent($templateData['content'] ?? []);
+            
+            return view('template', [
+                'content' => $html,  // CORRECTION : 'content' au lieu de 'html'
+                'page' => $page
+            ]);
+            
+        } catch (\Exception $e) {
+            \Log::error("Template rendering error: " . $e->getMessage());
+            abort(500, "Template rendering error: " . $e->getMessage());
+        }
     }
 
     private function renderContent($elements)
@@ -547,154 +554,272 @@ class TemplateController extends Controller
         foreach ($elements as $el) {
             $elType = $el['elType'] ?? 'section';
             $settings = $el['settings'] ?? [];
+            $isInner = $el['isInner'] ?? false;
 
-            // --- SECTION
-            if ($elType === 'section') {
-                // build inline style for padding/background
-                $style = '';
-
-                if (!empty($settings['padding'])) {
-                    $p = $settings['padding'];
-                    $unit = $p['unit'] ?? 'px';
-                    $style .= 'padding: ' . ($p['top'] ?? 0) . $unit . ' ' . ($p['right'] ?? 0) . $unit . ' ' . ($p['bottom'] ?? 0) . $unit . ' ' . ($p['left'] ?? 0) . $unit . ';';
-                }
-
-                $sectionClass = 'elementor-section';
-                $inner = '';
-
-                // slideshow background
-                if (($settings['background_background'] ?? '') === 'slideshow' && !empty($settings['background_slideshow_gallery'])) {
-                    $slides = $settings['background_slideshow_gallery'];
-                    $inner .= '<div class="template-slideshow">';
-                    foreach ($slides as $s) {
-                        $url = $s['url'] ?? '';
-                        $inner .= '<div class="slide"><img src="'.htmlspecialchars($url).'" alt=""></div>';
+            try {
+                // --- SECTION
+                if ($elType === 'section') {
+                    $style = $this->buildSectionStyle($settings);
+                    $sectionClass = 'elementor-section' . ($isInner ? ' elementor-inner-section' : '');
+                    
+                    $html .= '<section class="'.$sectionClass.'" style="'.htmlspecialchars($style).'">';
+                    
+                    // Gestion du slideshow background
+                    if (($settings['background_background'] ?? '') === 'slideshow' && !empty($settings['background_slideshow_gallery'])) {
+                        $html .= $this->renderSlideshow($settings['background_slideshow_gallery']);
                     }
-                    $inner .= '</div>';
-                }
-
-                // overlay / other background handling (basic)
-                if (!empty($settings['background_overlay_color'])) {
-                    $style .= 'position:relative;';
-                }
-
-                $html .= '<section class="'.$sectionClass.'" style="'.htmlspecialchars($style).'">';
-                // render child elements (columns / widgets)
-                if (!empty($el['elements'])) {
-                    $html .= $this->renderContent($el['elements']);
-                }
-                // append slideshow inner if present (we appended before children to be background-like)
-                if ($inner) {
-                    // place as first child so images are background-ish (CSS will absolutely position)
-                    $html = str_replace('<section', '<section', $html); // noop, kept for clarity
-                }
-                // add slideshow markup at top of section
-                if (!empty($settings['background_slideshow_gallery'])) {
-                    // we already built slides above; inject them right after opening tag:
-                    // naive injection: re-build last added section by replacing last occurrence
-                    $lastSectionPos = strrpos($html, '</section>');
-                    // easier: just append slideshow before content end
-                    // but to keep it simple: add slideshow wrapper now
-                    // (we already rendered slideshow in $inner)
-                    // ensure slideshow is top-level inside section
-                    $html = rtrim($html, '</section>') . $inner . '</section>';
-                }
-                $html .= '</section>';
-            }
-
-            // --- COLUMN
-            if ($elType === 'column') {
-                $colSize = $settings['_column_size'] ?? 100;
-                $html .= '<div class="elementor-column" style="flex:0 0 '.(int)$colSize.'%">';
-                $html .= $this->renderContent($el['elements'] ?? []);
-                $html .= '</div>';
-            }
-
-            // --- WIDGET
-            if ($elType === 'widget') {
-                $widgetType = $el['widgetType'] ?? 'widget';
-                $widgetSettings = $el['settings'] ?? [];
-
-                // COMMON wrapper
-                $html .= '<div class="elementor-widget elementor-widget-'.$widgetType.'">';
-
-                // Heading widget
-                if ($widgetType === 'heading' || !empty($widgetSettings['header_size'])) {
-                    $size = $widgetSettings['header_size'] ?? 'h3';
-                    $title = $widgetSettings['title'] ?? '';
-                    $html .= '<'.$size.' class="elementor-heading-title">'.($title).'</'.$size.'>';
-                }
-
-                // Text editor / WYSIWYG
-                if (!empty($widgetSettings['editor']) || !empty($widgetSettings['text'])) {
-                    $content = $widgetSettings['editor'] ?? $widgetSettings['text'] ?? '';
-                    $html .= '<div class="elementor-widget-container">'.$content.'</div>';
-                }
-
-                // Image widget
-                if (!empty($widgetSettings['image'] ) || !empty($widgetSettings['url'])) {
-                    // Elementor sometimes nests image as ['id'=>..., 'url'=>...]
-                    $img = $widgetSettings['image'] ?? $widgetSettings;
-                    $imgUrl = '';
-                    if (is_array($img)) {
-                        $imgUrl = $img['url'] ?? ($img['0']['url'] ?? '');
-                    } else {
-                        $imgUrl = $widgetSettings['url'] ?? '';
+                    
+                    // Rendu des éléments enfants
+                    if (!empty($el['elements'])) {
+                        $html .= $this->renderContent($el['elements']);
                     }
-                    if ($imgUrl) {
-                        $html .= '<div class="elementor-image"><img src="'.htmlspecialchars($imgUrl).'" alt=""></div>';
-                    }
+                    
+                    $html .= '</section>';
                 }
 
-                // Gallery widget (basic)
-                if (!empty($widgetSettings['gallery'])) {
-                    $html .= '<div class="elementor-gallery">';
-                    foreach ($widgetSettings['gallery'] as $g) {
-                        $url = $g['url'] ?? '';
-                        $html .= '<div class="gallery-item"><img src="'.htmlspecialchars($url).'" alt=""></div>';
+                // --- COLUMN
+                elseif ($elType === 'column') {
+                    $colSize = $settings['_column_size'] ?? 100;
+                    $style = 'flex:0 0 '.(int)$colSize.'%;';
+                    
+                    // Ajouter le padding si présent
+                    if (!empty($settings['padding'])) {
+                        $p = $settings['padding'];
+                        $unit = $p['unit'] ?? 'px';
+                        $style .= 'padding: ' . ($p['top'] ?? 0) . $unit . ' ' . ($p['right'] ?? 0) . $unit . ' ' . ($p['bottom'] ?? 0) . $unit . ' ' . ($p['left'] ?? 0) . $unit . ';';
                     }
+                    
+                    $html .= '<div class="elementor-column" style="'.htmlspecialchars($style).'">';
+                    $html .= $this->renderContent($el['elements'] ?? []);
                     $html .= '</div>';
                 }
 
-                // Video widget (basic: supports youtube / iframe url)
-                if (!empty($widgetSettings['video_url']) || !empty($widgetSettings['link'])) {
-                    $v = $widgetSettings['video_url'] ?? $widgetSettings['link'] ?? '';
-                    // convert to iframe if youtube
-                    if (str_contains($v, 'youtube') || str_contains($v, 'youtu.be')) {
-                        // naive youtube id extraction
-                        if (preg_match("#(youtube\.com/watch\?v=|youtu\.be/)([A-Za-z0-9_\-]+)#", $v, $m)) {
-                            $id = $m[2];
-                            $html .= '<div class="elementor-video"><iframe src="https://www.youtube.com/embed/'.htmlspecialchars($id).'" frameborder="0" allowfullscreen></iframe></div>';
-                        } else {
-                            $html .= '<div class="elementor-video"><iframe src="'.htmlspecialchars($v).'" frameborder="0" allowfullscreen></iframe></div>';
-                        }
-                    } else {
-                        $html .= '<div class="elementor-video"><iframe src="'.htmlspecialchars($v).'" frameborder="0" allowfullscreen></iframe></div>';
-                    }
+                // --- WIDGET
+                elseif ($elType === 'widget') {
+                    $widgetType = $el['widgetType'] ?? 'widget';
+                    $widgetSettings = $el['settings'] ?? [];
+                    
+                    $html .= '<div class="elementor-widget elementor-widget-'.$widgetType.'">';
+                    $html .= $this->renderWidget($widgetType, $widgetSettings);
+                    $html .= '</div>';
                 }
-
-                // Repeater / lists (ex: artistes) - fallback: iterate settings arrays and print
-                foreach ($widgetSettings as $k => $v) {
-                    if (is_array($v) && !empty($v) && array_key_exists('0', $v) && is_array($v[0])) {
-                        // print simple list
-                        if (str_contains($k, 'list') || str_contains($k, 'items') || str_contains($k, 'gallery')) {
-                            $html .= '<ul class="elementor-list">';
-                            foreach ($v as $item) {
-                                $label = $item['label'] ?? ($item['name'] ?? json_encode($item));
-                                $sub = $item['sub'] ?? ($item['meta'] ?? '');
-                                $html .= '<li>'.($label).' '.($sub ? ' - '.$sub : '').'</li>';
-                            }
-                            $html .= '</ul>';
-                        }
-                    }
-                }
-
-                // Fallback: dump specific simple settings like 'title' handled above; otherwise show nothing.
-
-                $html .= '</div>'; // end widget
+            } catch (\Exception $e) {
+                // Log l'erreur mais continue le rendu
+                \Log::error("Error rendering element: " . $e->getMessage());
+                $html .= '<!-- Error rendering element: ' . $e->getMessage() . ' -->';
             }
         }
 
+        \Log::info("Rendered HTML length: " . strlen($html)); // Debug
+        return $html;
+    }
+    private function buildSectionStyle($settings)
+    {
+        $style = '';
+
+        // Padding
+        if (!empty($settings['padding'])) {
+            $p = $settings['padding'];
+            $unit = $p['unit'] ?? 'px';
+            $style .= 'padding: ' . ($p['top'] ?? 0) . $unit . ' ' . ($p['right'] ?? 0) . $unit . ' ' . ($p['bottom'] ?? 0) . $unit . ' ' . ($p['left'] ?? 0) . $unit . ';';
+        }
+
+        // Margin
+        if (!empty($settings['margin'])) {
+            $m = $settings['margin'];
+            $unit = $m['unit'] ?? 'px';
+            $style .= 'margin: ' . ($m['top'] ?? 0) . $unit . ' ' . ($m['right'] ?? 0) . $unit . ' ' . ($m['bottom'] ?? 0) . $unit . ' ' . ($m['left'] ?? 0) . $unit . ';';
+        }
+
+        // Background color
+        if (!empty($settings['background_color'])) {
+            $style .= 'background-color: '.$settings['background_color'].';';
+        }
+
+        // Background image
+        if (!empty($settings['background_image']['url'])) {
+            $style .= 'background-image: url("'.htmlspecialchars($settings['background_image']['url']).'");';
+            $style .= 'background-size: cover; background-position: center;';
+        }
+
+        return $style;
+    }
+    private function renderSlideshow($gallery)
+    {
+        $html = '<div class="template-slideshow">';
+        foreach ($gallery as $index => $slide) {
+            $url = $slide['url'] ?? '';
+            $active = $index === 0 ? 'active' : '';
+            $html .= '<div class="slide '.$active.'"><img src="'.htmlspecialchars($url).'" alt=""></div>';
+        }
+        $html .= '</div>';
+        return $html;
+    }
+    private function renderWidget($widgetType, $settings)
+    {
+        switch ($widgetType) {
+            case 'heading':
+                return $this->renderHeading($settings);
+            case 'text-editor':
+                return $this->renderTextEditor($settings);
+            case 'image':
+                return $this->renderImage($settings);
+            case 'button':
+                return $this->renderButton($settings);
+            case 'icon-box':
+                return $this->renderIconBox($settings);
+            case 'spacer':
+                return $this->renderSpacer($settings);
+            case 'testimonial':
+                return $this->renderTestimonial($settings);
+            case 'image-carousel':
+                return $this->renderImageCarousel($settings);
+            case 'icon':
+                return $this->renderIcon($settings);
+            case 'video':
+                return $this->renderVideo($settings);
+            default:
+                return '<!-- Widget non supporté: '.$widgetType.' -->';
+        }
+    }
+    private function renderHeading($settings)
+    {
+        $size = $settings['header_size'] ?? 'h3';
+        $title = $settings['title'] ?? '';
+        $align = $settings['align'] ?? 'left';
+        
+        return '<'.$size.' class="elementor-heading-title" style="text-align: '.$align.'">'.($title).'</'.$size.'>';
+    }
+
+    private function renderTextEditor($settings)
+    {
+        $content = $settings['editor'] ?? $settings['text'] ?? '';
+        $align = $settings['align'] ?? 'left';
+        
+        return '<div class="elementor-widget-container" style="text-align: '.$align.'">'.$content.'</div>';
+    }
+
+    private function renderButton($settings)
+    {
+        $text = $settings['text'] ?? '';
+        $align = $settings['align'] ?? 'left';
+        
+        return '<div style="text-align: '.$align.'">
+            <button class="elementor-button">'.$text.'</button>
+        </div>';
+    }
+
+    private function renderIconBox($settings)
+    {
+        $title = $settings['title_text'] ?? '';
+        $description = $settings['description_text'] ?? '';
+        
+        return '<div class="elementor-icon-box">
+            <div class="elementor-icon-box-title">'.$title.'</div>
+            <div class="elementor-icon-box-description">'.$description.'</div>
+        </div>';
+    }
+
+    private function renderSpacer($settings)
+    {
+        $height = $settings['space']['size'] ?? 20;
+        $unit = $settings['space']['unit'] ?? 'px';
+        
+        return '<div style="height: '.$height.$unit.';"></div>';
+    }
+
+    private function renderImage($settings)
+    {
+        $image = $settings['image'] ?? [];
+        $url = is_array($image) ? ($image['url'] ?? '') : $settings['url'] ?? '';
+        
+        if ($url) {
+            return '<div class="elementor-image"><img src="'.htmlspecialchars($url).'" alt=""></div>';
+        }
+        
+        return '';
+    }
+
+    private function renderVideo($settings)
+    {
+        $url = $settings['youtube_url'] ?? $settings['vimeo_url'] ?? '';
+        
+        if (str_contains($url, 'youtube') || str_contains($url, 'youtu.be')) {
+            if (preg_match("#(youtube\.com/watch\?v=|youtu\.be/)([A-Za-z0-9_\-]+)#", $url, $m)) {
+                $id = $m[2];
+                return '<div class="elementor-video"><iframe src="https://www.youtube.com/embed/'.htmlspecialchars($id).'" frameborder="0" allowfullscreen></iframe></div>';
+            }
+        }
+        
+        return '<div class="elementor-video"><iframe src="'.htmlspecialchars($url).'" frameborder="0" allowfullscreen></iframe></div>';
+    }
+    private function renderIcon($settings)
+    {
+        $icon = $settings['selected_icon']['value'] ?? '';
+        $align = $settings['align'] ?? 'left';
+        
+        if ($icon) {
+            return '<div style="text-align: '.$align.'">
+                <span class="elementor-icon">'.$icon.'</span>
+            </div>';
+        }
+        
+        return '';
+    }
+
+    private function renderTestimonial($settings)
+    {
+        $content = $settings['testimonial_content'] ?? '';
+        $name = $settings['testimonial_name'] ?? '';
+        $job = $settings['testimonial_job'] ?? '';
+        $image = $settings['testimonial_image']['url'] ?? '';
+        $align = $settings['testimonial_alignment'] ?? 'left';
+        
+        $html = '<div class="elementor-testimonial" style="text-align: '.$align.'">';
+        
+        if ($image) {
+            $html .= '<div class="testimonial-image"><img src="'.htmlspecialchars($image).'" alt="'.$name.'"></div>';
+        }
+        
+        if ($content) {
+            $html .= '<div class="testimonial-content">'.$content.'</div>';
+        }
+        
+        if ($name) {
+            $html .= '<div class="testimonial-name">'.$name.'</div>';
+        }
+        
+        if ($job) {
+            $html .= '<div class="testimonial-job">'.$job.'</div>';
+        }
+        
+        $html .= '</div>';
+        
+        return $html;
+    }
+
+    private function renderImageCarousel($settings)
+    {
+        $images = $settings['carousel'] ?? [];
+        $slidesToShow = $settings['slides_to_show'] ?? 4;
+        
+        if (empty($images)) {
+            return '';
+        }
+        
+        $html = '<div class="elementor-image-carousel" style="display: grid; grid-template-columns: repeat('.$slidesToShow.', 1fr); gap: 15px;">';
+        
+        foreach ($images as $image) {
+            $url = $image['url'] ?? '';
+            if ($url) {
+                $html .= '<div class="carousel-item">
+                    <img src="'.htmlspecialchars($url).'" alt="" style="width: 100%; height: 200px; object-fit: cover;">
+                </div>';
+            }
+        }
+        
+        $html .= '</div>';
+        
         return $html;
     }
 }
@@ -3934,51 +4059,179 @@ $classes = ($active ?? false)
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <title>{{ $slug ?? 'Template' }}</title>
-
-  {{-- Ton CSS template (place files dans public/template/css/) --}}
-  <link rel="stylesheet" href="{{ asset('template/css/style.css') }}">
+  <title>{{ $page ?? 'Template' }}</title>
 
   {{-- CSS léger pour simuler les classes elementor --}}
   <style>
-    /* layout de base */
-    body { margin:0; font-family: Arial, Helvetica, sans-serif; color:#111; background:#fff; }
-    .elementor-section { position: relative; overflow: hidden; }
-    .elementor-column { display:flex; flex-direction:column; padding:1rem; box-sizing:border-box; }
-    .elementor-widget { margin-bottom:1rem; }
-    .elementor-heading-title { margin:0 0 1rem 0; font-family: 'Oswald', sans-serif; text-align:center; }
+    /* Styles généraux */
+    body { 
+        margin:0; 
+        font-family: Arial, Helvetica, sans-serif; 
+        color:#111; 
+        background:#fff; 
+    }
+    
+    .elementor-button {
+        background: #AE8959;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        display: inline-block;
+        text-decoration: none;
+    }
 
-    /* slideshow */
-    .template-slideshow { position: absolute; inset:0; z-index:0; }
-    .template-slideshow .slide { position:absolute; inset:0; opacity:0; transition:opacity .8s ease; }
-    .template-slideshow .slide img { width:100%; height:100%; object-fit:cover; display:block; }
-    .template-slideshow .slide.active { opacity:1; z-index:0; }
+    .elementor-button:hover {
+        background: #8c6d47;
+    }
 
-    /* overlay to put content above slideshow */
+    .elementor-icon-box {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .elementor-icon-box-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #FFFFFF;
+    }
+
+    .elementor-icon-box-description {
+        color: #CCCCCC;
+        line-height: 1.5;
+    }
+
+    /* Témoignages */
+    .elementor-testimonial {
+        background: rgba(255,255,255,0.1);
+        padding: 20px;
+        border-radius: 5px;
+        margin: 10px;
+    }
+
+    .testimonial-image img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .testimonial-content {
+        font-style: italic;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+
+    .testimonial-name {
+        font-weight: bold;
+        color: #AE8959;
+    }
+
+    .testimonial-job {
+        font-size: 0.9em;
+        color: #CCCCCC;
+    }
+
+    /* Icônes */
+    .elementor-icon {
+        font-size: 2em;
+        color: #AE8959;
+        display: inline-block;
+    }
+
+    /* Carrousel d'images */
+    .elementor-image-carousel {
+        margin: 20px 0;
+        display: grid;
+        gap: 15px;
+    }
+
+    .carousel-item {
+        overflow: hidden;
+        border-radius: 5px;
+    }
+
+    /* Slideshow */
+    .template-slideshow {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
+
+    .template-slideshow .slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.8s ease;
+    }
+
+    .template-slideshow .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .template-slideshow .slide.active {
+        opacity: 1;
+        z-index: 0;
+    }
+
+    /* Layout */
+    .elementor-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .elementor-column {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    .elementor-widget {
+        margin-bottom: 1rem;
+    }
+
+    .elementor-heading-title {
+        margin: 0 0 1rem 0;
+        font-family: 'Oswald', sans-serif;
+    }
+
+    .elementor-image img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Overlay pour le contenu au-dessus du slideshow */
     .elementor-section > .elementor-column,
     .elementor-section > .elementor-widget,
     .elementor-section .elementor-column {
-      position: relative; z-index:2;
+        position: relative;
+        z-index: 2;
     }
 
-    /* gallery */
-    .elementor-gallery { display:flex; flex-wrap:wrap; gap:8px; }
-    .elementor-gallery .gallery-item img { width:200px; height:120px; object-fit:cover; }
-
-    /* simple list */
-    .elementor-list { list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px; }
-    .elementor-list li { background:#f5f5f5; padding:6px 10px; border-radius:6px; }
-
-    /* responsive */
+    /* Responsive */
     @media (max-width: 768px) {
-      .elementor-column { padding: .5rem; }
+        .elementor-column {
+            padding: 0.5rem;
+        }
+        
+        .elementor-image-carousel {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
     }
   </style>
 </head>
 <body>
 
   <div id="template-root">
-    {!! $html !!}
+    {!! $content !!}  {{-- CORRECTION : $content au lieu de $html --}}
   </div>
 
   {{-- JS minimal pour le slideshow --}}
@@ -3999,8 +4252,6 @@ $classes = ($active ?? false)
     });
   </script>
 
-  {{-- ton JS template si nécessaire --}}
-  <script src="{{ asset('template/js/main.js') }}"></script>
 </body>
 </html>
 
@@ -4021,9 +4272,9 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\TemplateController;
 
 
-Route::get('/', [TemplateController::class, 'show']);
 
 
 Route::middleware('guest')->group(function () {
@@ -4106,6 +4357,9 @@ Route::get('/', function () {
 });
 
 Route::get('/template/{page?}', [TemplateController::class, 'show']);
+
+Route::get('/{page}', [TemplateController::class, 'show'])
+    ->where('page', 'homepage-1|homepage-2|about-us|contact-us');
 
 
 Route::resource('user', UserController::class);
