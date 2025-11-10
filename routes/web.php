@@ -9,7 +9,12 @@ use App\Http\Controllers\TemplateController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/', [TemplateController::class, 'show']);
+Route::get('/', function () {
+    return redirect('/template/homepage-1');
+});
+
+Route::get('/template/{page?}', [TemplateController::class, 'show']);
+
 
 Route::resource('user', UserController::class);
 
